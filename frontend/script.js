@@ -1,68 +1,74 @@
+// Detect backend URL (local or Render)
+const backendURL =
+  window.location.hostname === "localhost"
+    ? "http://localhost:10000"
+    : window.location.origin;
 
-// Submit Employee Form
+// ------------------ Submit Employee ------------------
 document.getElementById("employeeForm").addEventListener("submit", async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    const data = {
-        name: document.getElementById("name").value,
-        designation: document.getElementById("designation").value,
-        salary: document.getElementById("salary").value,
-        gender: document.getElementById("gender").value,
-        address: document.getElementById("address").value,
-        company: document.getElementById("company").value
-    };
+  const data = {
+    name: document.getElementById("name").value,
+    designation: document.getElementById("designation").value,
+    salary: document.getElementById("salary").value,
+    gender: document.getElementById("gender").value,
+    address: document.getElementById("address").value,
+    company: document.getElementById("company").value
+  };
 
-    try {
-        const res = await fetch("http://localhost:5000/submit", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(data)
-        });
-        const result = await res.json();
-        document.getElementById("response").innerText = result.message;
-        document.getElementById("employeeForm").reset();
-    } catch (err) {
-        document.getElementById("response").innerText = "Error saving data!";
-        console.error(err);
-    }
+  try {
+    const res = await fetch(`${backendURL}/submit`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    });
+    const result = await res.json();
+    document.getElementById("response").innerText = result.message;
+    document.getElementById("employeeForm").reset();
+  } catch (err) {
+    document.getElementById("response").innerText = "Error saving data!";
+    console.error(err);
+  }
 });
 
+// ------------------ Search Employee ------------------
 document.getElementById("searchBtn").addEventListener("click", async () => {
-    const field = document.getElementById("searchField").value;
-    const value = document.getElementById("searchValue").value.trim();
+  const field = document.getElementById("searchField").value;
+  const value = document.getElementById("searchValue").value.trim();
 
-    if (!value) return alert("Please enter a search value");
+  if (!value) return alert("Please enter a search value");
 
-    try {
-        const res = await fetch(`http://localhost:5000/search?field=${field}&value=${value}`);
-        const data = await res.json();
-        const resultsDiv = document.getElementById("results");
-        resultsDiv.innerHTML = "";
+  try {
+    const res = await fetch(`${backendURL}/search?field=${field}&value=${value}`);
+    const data = await res.json();
+    const resultsDiv = document.getElementById("results");
+    resultsDiv.innerHTML = "";
 
-        if (data.status === "not_found") {
-            resultsDiv.innerHTML = `<p style="text-align:center;color:red;">No records found!</p>`;
-        } else {
-            let table = `<table>
-                <tr>
-                    <th>ID</th><th>Name</th><th>Designation</th><th>Salary</th>
-                    <th>Gender</th><th>Address</th><th>Company</th>
-                </tr>`;
-            data.results.forEach(r => {
-                table += `<tr>
-                    <td>${r.id}</td>
-                    <td>${r.name}</td>
-                    <td>${r.designation}</td> 
-                    <td>${r.salary}</td>
-                    <td>${r.gender}</td>
-                    <td>${r.address}</td>
-                    <td>${r.company}</td>
-                </tr>`;
-            });
-            table += `</table>`;
-            resultsDiv.innerHTML = table;
-        }
-    } catch (err) {
-        console.error(err);
-        alert("Error searching data!");
+    if (data.status === "not_found") {
+      resultsDiv.innerHTML = `<p style="text-align:center;color:red;">No records found!</p>`;
+    } else {
+      let table = `<table>
+          <tr>
+              <th>ID</th><th>Name</th><th>Designation</th><th>Salary</th>
+              <th>Gender</th><th>Address</th><th>Company</th>
+          </tr>`;
+      data.results.forEach(r => {
+        table += `<tr>
+            <td>${r.id}</td>
+            <td>${r.name}</td>
+            <td>${r.designation}</td> 
+            <td>${r.salary}</td>
+            <td>${r.gender}</td>
+            <td>${r.address}</td>
+            <td>${r.company}</td>
+        </tr>`;
+      });
+      table += `</table>`;
+      resultsDiv.innerHTML = table;
     }
+  } catch (err) {
+    console.error(err);
+    alert("Error searching data!");
+  }
 });
