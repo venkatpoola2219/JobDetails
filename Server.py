@@ -37,6 +37,13 @@ def serve_index():
     return send_from_directory(app.static_folder, 'index.html')
 
 # -------------------------
+# Serve Static Files (JS/CSS)
+# -------------------------
+@app.route('/<path:path>')
+def serve_static_files(path):
+    return send_from_directory(app.static_folder, path)
+
+# -------------------------
 # API: Save Employee
 # -------------------------
 @app.route('/submit', methods=['POST'])
