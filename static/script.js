@@ -1,10 +1,10 @@
-// Detect backend URL (local or Render)
+// Detect backend URL (local vs live)
 const backendURL =
   window.location.hostname === "localhost"
     ? "http://localhost:10000"
-    : window.location.origin;
+    : window.location.origin; // Works automatically on Render
 
-// ------------------ Submit Employee ------------------
+// ---------- Submit Employee ----------
 document.getElementById("employeeForm").addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -32,7 +32,7 @@ document.getElementById("employeeForm").addEventListener("submit", async (e) => 
   }
 });
 
-// ------------------ Search Employee ------------------
+// ---------- Search Employee ----------
 document.getElementById("searchBtn").addEventListener("click", async () => {
   const field = document.getElementById("searchField").value;
   const value = document.getElementById("searchValue").value.trim();
@@ -57,7 +57,7 @@ document.getElementById("searchBtn").addEventListener("click", async () => {
         table += `<tr>
             <td>${r.id}</td>
             <td>${r.name}</td>
-            <td>${r.designation}</td> 
+            <td>${r.designation}</td>
             <td>${r.salary}</td>
             <td>${r.gender}</td>
             <td>${r.address}</td>
