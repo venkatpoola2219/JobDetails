@@ -3,7 +3,8 @@ from flask_cors import CORS
 import sqlite3
 import os
 
-app = Flask(__name__, static_folder='frontend')  # Folder name where index.html is
+# Flask App Setup
+app = Flask(__name__, static_folder='frontend', static_url_path='')
 CORS(app)
 
 # -------------------------
@@ -29,14 +30,14 @@ def init_db():
 init_db()
 
 # -------------------------
-# Serve Frontend
+# Serve Frontend (index.html)
 # -------------------------
 @app.route('/')
 def serve_index():
     return send_from_directory(app.static_folder, 'index.html')
 
 # -------------------------
-# Save Employee
+# API: Save Employee
 # -------------------------
 @app.route('/submit', methods=['POST'])
 def submit():
@@ -63,11 +64,11 @@ def submit():
     return jsonify({'status': 'success', 'message': f'Data saved for {name}'})
 
 # -------------------------
-# Search Employee
+# API: Search Employee
 # -------------------------
 @app.route('/search', methods=['GET'])
 def search():
-    field = request.args.get('field', 'name')  # 'name', 'company', or 'designation'
+    field = request.args.get('field', 'name')
     value = request.args.get('value', '')
 
     if field not in ['name', 'company', 'designation']:
@@ -96,7 +97,7 @@ def search():
     return jsonify({'status': 'success', 'results': data})
 
 # -------------------------
-# Get All Employees
+# API: Get All Employees
 # -------------------------
 @app.route('/all', methods=['GET'])
 def get_all():
@@ -123,7 +124,7 @@ def get_all():
     return jsonify({'status': 'success', 'results': data})
 
 # -------------------------
-# Run Server
+# Run the Server
 # -------------------------
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 10000))

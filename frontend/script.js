@@ -1,56 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Employee Form & Search</title>
-<style>
-body { font-family: Arial; background: #f2f2f2; padding: 40px; }
-form, .search-box { background: white; padding: 20px; border-radius: 10px; max-width: 500px; margin: 20px auto; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-input, select, textarea { width: 100%; margin: 10px 0; padding: 10px; border-radius: 5px; border: 1px solid #ccc; }
-button { background: #007bff; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; }
-table { margin: 20px auto; border-collapse: collapse; width: 90%; }
-th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
-th { background-color: #007bff; color: white; }
-#response { text-align: center; font-weight: bold; }
-</style>
-</head>
-<body>
 
-<!-- Employee Form -->
-<form id="employeeForm">
-<h2>Employee Details</h2>
-<input type="text" id="name" placeholder="Name" required />
-<input type="text" id="designation" placeholder="Designation" required />
-<input type="number" id="salary" placeholder="Salary" required />
-<select id="gender" required>
-    <option value="">Select Gender</option>
-    <option value="Male">Male</option>
-    <option value="Female">Female</option>
-    <option value="Other">Other</option>
-</select>
-<textarea id="address" placeholder="Address" required></textarea>
-<input type="text" id="company" placeholder="Company Name" required />
-<button type="submit">Submit</button>
-<p id="response"></p>
-</form>
-
-<!-- Search Box -->
-<div class="search-box">
-  <h3>Search Employees</h3>
-  <select id="searchField">
-      <option value="name">Search by Name</option>
-      <option value="company">Search by Company</option>
-      <option value="designation">Search by Designation</option>
-  </select>
-  <input type="text" id="searchValue" placeholder="Enter search value">
-  <button id="searchBtn">Search</button>
-</div>
-
-<div id="results"></div>
-
-
-<script>
 // Submit Employee Form
 document.getElementById("employeeForm").addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -103,7 +51,7 @@ document.getElementById("searchBtn").addEventListener("click", async () => {
                 table += `<tr>
                     <td>${r.id}</td>
                     <td>${r.name}</td>
-                    <td>${r.designation}</td>
+                    <td>${r.designation}</td> 
                     <td>${r.salary}</td>
                     <td>${r.gender}</td>
                     <td>${r.address}</td>
@@ -118,7 +66,3 @@ document.getElementById("searchBtn").addEventListener("click", async () => {
         alert("Error searching data!");
     }
 });
-</script>
-
-</body>
-</html>
