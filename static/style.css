@@ -1,8 +1,11 @@
-body { font-family: Arial; background: #f2f2f2; padding: 40px; }
-form, .search-box { background: white; padding: 20px; border-radius: 10px; max-width: 500px; margin: 20px auto; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+body { font-family: Arial; background: #f2f2f2; padding: 20px; }
+form, .search-box, .login-box { background: white; padding: 20px; border-radius: 10px; max-width: 500px; margin: 20px auto; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
 input, select, textarea { width: 100%; margin: 10px 0; padding: 10px; border-radius: 5px; border: 1px solid #ccc; }
 button { background: #007bff; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; }
 table { margin: 20px auto; border-collapse: collapse; width: 90%; }
 th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
 th { background-color: #007bff; color: white; }
-#response { text-align: center; font-weight: bold; }
+nav { text-align:center; margin: 10px 0; }
+nav a { margin:0 10px; color:#007bff; text-decoration:none; font-weight:bold; }
+nav a:hover { text-decoration:underline; }
+#response { text-align:center; font-weight:bold; }

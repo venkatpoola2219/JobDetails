@@ -1,11 +1,10 @@
-// Detect backend URL (local vs live)
 const backendURL =
   window.location.hostname === "localhost"
     ? "http://localhost:10000"
-    : window.location.origin; // Works automatically on Render
+    : window.location.origin;
 
 // ---------- Submit Employee ----------
-document.getElementById("employeeForm").addEventListener("submit", async (e) => {
+document.getElementById("employeeForm")?.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const data = {
@@ -33,7 +32,7 @@ document.getElementById("employeeForm").addEventListener("submit", async (e) => 
 });
 
 // ---------- Search Employee ----------
-document.getElementById("searchBtn").addEventListener("click", async () => {
+document.getElementById("searchBtn")?.addEventListener("click", async () => {
   const field = document.getElementById("searchField").value;
   const value = document.getElementById("searchValue").value.trim();
 
@@ -73,8 +72,8 @@ document.getElementById("searchBtn").addEventListener("click", async () => {
   }
 });
 
-// Show All Employees
-document.getElementById("showAllBtn").addEventListener("click", async () => {
+// ---------- Show All Employees ----------
+document.getElementById("showAllBtn")?.addEventListener("click", async () => {
   try {
     const res = await fetch(`${backendURL}/all`);
     const data = await res.json();
@@ -105,6 +104,6 @@ document.getElementById("showAllBtn").addEventListener("click", async () => {
     }
   } catch (err) {
     console.error(err);
-    alert("Error fetching all employees!");
+    alert("Error fetching data!");
   }
 });

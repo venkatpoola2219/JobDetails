@@ -1,14 +1,15 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, redirect, url_for, session
 from flask_cors import CORS
 import sqlite3
 import os
 
 app = Flask(__name__, static_folder='static', template_folder='templates')
 CORS(app)
+app.secret_key = "your_secret_key"
 
 DB_FILE = "employees.db"
 
-# ---------- DATABASE SETUP ----------
+# -------- DATABASE ----------
 def init_db():
     conn = sqlite3.connect(DB_FILE)
     c = conn.cursor()
@@ -26,11 +27,35 @@ def init_db():
 
 init_db()
 
-# ---------- ROUTES ----------
+# -------- ROUTES ----------
 @app.route('/')
-def home():
+def index():
     return render_template("index.html")
 
+@app.route('/admin_login', methods=['GET', 'POST'])
+def admin_login():
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+        if username == 'venkat' and password == 'sukanyavenkat@1212':
+            session['logged_in'] = True
+            return redirect(url_for('admin_dashboard'))
+        else:
+            return render_template("admin_login.html", error="Invalid credentials")
+    return render_template("admin_login.html")
+
+@app.route('/admin')
+def admin_dashboard():
+    if not session.get('logged_in'):
+        return redirect(url_for('admin_login'))
+    return render_template("admin.html")
+
+@app.route('/logout')
+def logout():
+    session.pop('logged_in', None)
+    return redirect(url_for('index'))
+
+# -------- EMPLOYEE DATA ----------
 @app.route('/submit', methods=['POST'])
 def submit():
     data = request.get_json()
@@ -46,13 +71,13 @@ def submit():
 
 @app.route('/search')
 def search():
+    if not session.get('logged_in'):
+        return jsonify({"status": "unauthorized"}), 401
     field = request.args.get('field')
     value = request.args.get('value')
 
     conn = sqlite3.connect(DB_FILE)
     c = conn.cursor()
-
-    # Case-insensitive search using LOWER()
     query = f"SELECT * FROM employees WHERE LOWER({field}) LIKE ?"
     c.execute(query, ('%' + value.lower() + '%',))
     results = c.fetchall()
@@ -68,9 +93,10 @@ def search():
     ]
     return jsonify({"status": "ok", "results": employees})
 
-# New route to get all employees
 @app.route('/all')
 def all_employees():
+    if not session.get('logged_in'):
+        return jsonify({"status": "unauthorized"}), 401
     conn = sqlite3.connect(DB_FILE)
     c = conn.cursor()
     c.execute("SELECT * FROM employees")
@@ -87,8 +113,7 @@ def all_employees():
     ]
     return jsonify({"status": "ok", "results": employees})
 
-
-# ---------- MAIN ----------
+# -------- MAIN ----------
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 10000))
     app.run(host='0.0.0.0', port=port)

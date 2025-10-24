@@ -3,10 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Employee Management</title>
+<title>Employee Form</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+
+<!-- Navbar -->
+<nav>
+  <a href="{{ url_for('index') }}">Home</a> |
+  <a href="{{ url_for('admin_login') }}">Admin</a>
+</nav>
 
 <!-- Employee Form -->
 <form id="employeeForm">
@@ -25,21 +31,6 @@
 <button type="submit">Submit</button>
 <p id="response"></p>
 </form>
-
-<!-- Search Section -->
-<div class="search-box">
-  <h3>Search Employees</h3>
-  <select id="searchField">
-      <option value="name">Search by Name</option>
-      <option value="company">Search by Company</option>
-      <option value="designation">Search by Designation</option>
-  </select>
-  <input type="text" id="searchValue" placeholder="Enter search value">
-  <button id="showAllBtn">Show All Employees</button>
-  <button id="searchBtn">Search</button>
-</div>
-
-<div id="results"></div>
 
 <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
