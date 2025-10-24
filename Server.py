@@ -48,10 +48,13 @@ def submit():
 def search():
     field = request.args.get('field')
     value = request.args.get('value')
+
     conn = sqlite3.connect(DB_FILE)
     c = conn.cursor()
-    query = f"SELECT * FROM employees WHERE {field} LIKE ?"
-    c.execute(query, ('%' + value + '%',))
+
+    # Case-insensitive search using LOWER()
+    query = f"SELECT * FROM employees WHERE LOWER({field}) LIKE ?"
+    c.execute(query, ('%' + value.lower() + '%',))
     results = c.fetchall()
     conn.close()
 
@@ -64,6 +67,26 @@ def search():
         for r in results
     ]
     return jsonify({"status": "ok", "results": employees})
+
+# New route to get all employees
+@app.route('/all')
+def all_employees():
+    conn = sqlite3.connect(DB_FILE)
+    c = conn.cursor()
+    c.execute("SELECT * FROM employees")
+    results = c.fetchall()
+    conn.close()
+
+    if not results:
+        return jsonify({"status": "not_found"})
+
+    employees = [
+        {"id": r[0], "name": r[1], "designation": r[2],
+         "salary": r[3], "gender": r[4], "address": r[5], "company": r[6]}
+        for r in results
+    ]
+    return jsonify({"status": "ok", "results": employees})
+
 
 # ---------- MAIN ----------
 if __name__ == '__main__':

@@ -72,3 +72,39 @@ document.getElementById("searchBtn").addEventListener("click", async () => {
     alert("Error searching data!");
   }
 });
+
+// Show All Employees
+document.getElementById("showAllBtn").addEventListener("click", async () => {
+  try {
+    const res = await fetch(`${backendURL}/all`);
+    const data = await res.json();
+    const resultsDiv = document.getElementById("results");
+    resultsDiv.innerHTML = "";
+
+    if (data.status === "not_found") {
+      resultsDiv.innerHTML = `<p style="text-align:center;color:red;">No records found!</p>`;
+    } else {
+      let table = `<table>
+          <tr>
+              <th>ID</th><th>Name</th><th>Designation</th><th>Salary</th>
+              <th>Gender</th><th>Address</th><th>Company</th>
+          </tr>`;
+      data.results.forEach(r => {
+        table += `<tr>
+            <td>${r.id}</td>
+            <td>${r.name}</td>
+            <td>${r.designation}</td>
+            <td>${r.salary}</td>
+            <td>${r.gender}</td>
+            <td>${r.address}</td>
+            <td>${r.company}</td>
+        </tr>`;
+      });
+      table += `</table>`;
+      resultsDiv.innerHTML = table;
+    }
+  } catch (err) {
+    console.error(err);
+    alert("Error fetching all employees!");
+  }
+});
