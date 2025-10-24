@@ -7,6 +7,10 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+  <nav>
+  <a href="{{ url_for('index') }}">Home</a> 
+  
+</nav>
 <div class="login-box">
   <h2>Admin Login</h2>
   {% if error %}
