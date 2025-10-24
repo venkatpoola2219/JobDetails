@@ -53,7 +53,7 @@ def admin_dashboard():
 @app.route('/logout')
 def logout():
     session.pop('logged_in', None)
-    return redirect(url_for('index'))
+    return redirect(url_for('admin_login'))
 
 # -------- EMPLOYEE DATA ----------
 @app.route('/submit', methods=['POST'])
